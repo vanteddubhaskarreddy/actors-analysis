@@ -71,3 +71,54 @@ models/
   - `DBT_SCHEMA`
   - (optional) `SNOWFLAKE_ROLE`, `SNOWFLAKE_DATABASE`, `SNOWFLAKE_WAREHOUSE`
 
+## Installation and Usage
+
+### Setup
+
+1. Clone this repository:
+    ```bash
+    git clone https://github.com/yourusername/actors-analysis.git
+    cd actors-analysis
+    ```
+
+2. Install dependencies:
+    ```bash
+    pip install -r dbt-requirements.txt
+    ```
+
+3. Configure environment variables:
+    ```bash
+    cp dbt.env .env
+    # Edit .env with your credentials
+    ```
+
+4. Run the pipeline:
+    ```bash
+    # Process all years
+    python process_years.py --start-year 1910 --end-year 2020
+
+    # Or process a specific year
+    dbt run --vars '{"current_processing_year": 1914}' --select marts.dim_actors marts.dim_actors_history_scd
+    ```
+
+## Data Quality
+
+This project includes comprehensive data quality tests:
+
+- Column presence and type validation
+- Rating range constraints (0-10)
+- Uniqueness checks for IDs
+- Referential integrity across models
+- Accepted values for categorical fields
+
+To run tests:
+```bash
+dbt test
+```
+
+## SQLFluff Integration
+
+Code quality is maintained with SQLFluff linting. Check SQL formatting with:
+```bash
+sqlfluff lint models/
+```
