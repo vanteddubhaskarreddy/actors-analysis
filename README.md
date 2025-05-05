@@ -18,7 +18,7 @@ Key features:
 
 ## Data Model
 
-![Data Model](https://via.placeholder.com/800x400?text=Actor+Analysis+Data+Model)
+![Data Model](https://fakeimg.pl/800x400/ff694b/fff9f8?text=Actor+Analysis+Data+Model)
 
 ### Sources
 - **academy.actor_films**: Raw actor-film relationship data
