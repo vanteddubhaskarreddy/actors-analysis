@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: fct_actor_films
+    description: >
+      Fact table storing the flattened actor-film relationships with 
+      ratings and voting information. This table provides a denormalized view
+      that's optimized for analysis of actor-film relationships.
+    columns:
+      - name: actor
+        description: Actor's full name
+        tests:
+          - not_null
+      - name: actor_id
+        description: Unique identifier for the actor
+        tests:
+          - not_null
+      - name: film
+        description: Film title
+        tests:
+          - not_null
+      - name: year
+        description: Release year of the film
+        tests:
+          - not_null
+      - name: votes
+        description: Number of votes received by the film
+        tests:
+          - not_null
+      - name: rating
+        description: Average rating of the film
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 10
+      - name: film_id
+        description: Unique identifier for the film
+        tests:
+          - not_null

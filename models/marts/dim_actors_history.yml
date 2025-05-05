@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: dim_actors_history
+    description: >
+      Type 2 Slowly Changing Dimension (SCD) table tracking historical changes
+      to actor attributes over time. Specifically tracks quality_class and active status
+      changes with effective dating. This model implements both full backfill and 
+      incremental year-by-year processing strategies.
+    columns:
+      - name: actor
+        description: Actor's full name
+        tests:
+          - not_null
+      - name: actor_id
+        description: Unique identifier for the actor
+        tests:
+          - not_null
+      - name: quality_class
+        description: Historical quality classification of the actor
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['star', 'good', 'average', 'bad']
+      - name: is_active
+        description: Historical active status of the actor
+        tests:
+          - not_null
+      - name: start_date
+        description: Date when this version of the record became effective
+        tests:
+          - not_null
+      - name: end_date
+        description: Date when this version was superseded (NULL indicates current record)
+      - name: current_year
+        description: Processing year for this historical record
+        tests:
+          - not_null

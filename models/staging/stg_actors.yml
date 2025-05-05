@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: stg_actors
+    description: >
+      Staging model that prepares actor history data from the source SCD table.
+      This model gives access to the historical data for actors, including
+      their quality classifications and activity status changes over time.
+    columns:
+      - name: actor
+        description: Actor's full name
+        tests:
+          - not_null
+      - name: actor_id
+        description: Unique identifier for the actor
+        tests:
+          - not_null
+      - name: quality_class
+        description: Historical quality classification of the actor
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['star', 'good', 'average', 'bad']
+      - name: is_active
+        description: Historical active status of the actor
+        tests:
+          - not_null
+      - name: start_date
+        description: Date when this version of the record became effective
+        tests:
+          - not_null
+      - name: end_date
+        description: Date when this version was superseded (NULL indicates current record)
+      - name: current_year
+        description: Year of the historical record, used for partitioning
+        tests:
+          - not_null

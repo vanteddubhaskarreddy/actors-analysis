@@ -1,0 +1,49 @@
+name: 'actors_analysis'
+
+config-version: 2
+version: '0.1'
+
+profile: 'actors_analysis'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+analysis-paths: ["analysis"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+    - "target"
+    - "dbt_packages"
+    - "logs"
+
+require-dbt-version: [">=1.3.0", "<2.0.0"]
+
+vars:
+  # Default year to process if not specified when running dbt
+  current_processing_year: 2020
+
+models:
+  actors_analysis:
+    # Set global materialization defaults
+    materialized: table
+    
+    # Configuration for each subdirectory
+    staging:
+      materialized: view
+      
+    intermediate:
+      materialized: incremental
+      
+    marts:
+      materialized: table
+      
+      # Specific configurations for mart models
+      dim_actors:
+        materialized: incremental
+        
+      dim_actors_history_scd:
+        materialized: incremental
+        
+      fct_actor_films:
+        materialized: incremental

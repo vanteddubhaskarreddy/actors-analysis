@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: stg_actors_current
+    description: >
+      Staging model that prepares current actor data from the source.
+      This model provides direct access to the current state of actors,
+      including their films, quality classifications and activity status.
+    columns:
+      - name: actor
+        description: Actor's full name
+        tests:
+          - not_null
+      - name: actor_id
+        description: Unique identifier for the actor
+        tests:
+          - not_null
+          - unique:
+              config:
+                where: "current_year IS NOT NULL"
+      - name: films
+        description: >
+          Nested array of film data containing film name, votes, rating, and film_id
+      - name: quality_class
+        description: Classification of actor based on performance metrics
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['star', 'good', 'average', 'bad']
+      - name: is_active
+        description: Boolean indicating if the actor is currently active
+        tests:
+          - not_null
+      - name: current_year
+        description: Year of the record, used for partitioning
+        tests:
+          - not_null

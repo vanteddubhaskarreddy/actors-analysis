@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: dim_actors
+    description: >
+      Dimension table that tracks actor information per year, including their film appearances, 
+      quality classification, and activity status. This model implements a cumulative approach
+      where actor data is built year by year, carrying forward data from previous years where needed.
+    columns:
+      - name: actor
+        description: Actor's full name
+        tests:
+          - not_null
+      - name: actor_id
+        description: Unique identifier for the actor
+        tests:
+          - not_null
+      - name: films
+        description: >
+          Nested array of film data containing film name, votes, rating, and film_id
+          for the current year only
+      - name: quality_class
+        description: >
+          Classification of actor based on average film rating.
+          Carries forward from previous years if no new films in current year.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['star', 'good', 'average', 'bad']
+      - name: is_active
+        description: Boolean indicating if the actor was active in the current year
+        tests:
+          - not_null
+      - name: current_year
+        description: Year this record represents
+        tests:
+          - not_null

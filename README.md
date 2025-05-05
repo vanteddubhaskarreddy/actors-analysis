@@ -1,0 +1,73 @@
+# Actors Analysis - Data Engineering Project
+
+![dbt](https://img.shields.io/badge/dbt-FF694B?style=for-the-badge&logo=dbt&logoColor=white)
+![Snowflake](https://img.shields.io/badge/Snowflake-29B5E8?style=for-the-badge&logo=snowflake&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-025E8C?style=for-the-badge&logo=sql&logoColor=white)
+
+A dbt project that demonstrates data engineering capabilities through actor performance analysis using incremental processing and slowly changing dimensions.
+
+## Project Overview
+
+This project ingests actor and film data from raw sources, models it using dbt, and builds a dimensional model for analyzing actor performances over time.
+
+Key features:
+- Incremental year-by-year processing
+- Type 2 Slowly Changing Dimension implementation
+- Nested data structures for film collections
+- Quality classification of actors based on film ratings
+
+## Data Model
+
+![Data Model](https://via.placeholder.com/800x400?text=Actor+Analysis+Data+Model)
+
+### Sources
+- **academy.actor_films**: Raw actor-film relationship data
+- **bhaskar_reddy07.actors**: Actor information with nested film data
+- **bhaskar_reddy07.actors_history_scd**: Historical SCD tracking
+
+### Final Data Marts
+- **dim_actors**: Current actor dimensions with quality classifications
+- **dim_actors_history_scd**: Historical tracking of actor attribute changes
+- **fct_actor_films**: Film facts with ratings and votes
+
+## Technical Implementation
+
+### Incremental Processing
+
+This project implements a sophisticated year-by-year processing approach where:
+
+1. Actor data is aggregated annually
+2. Quality classifications are calculated based on average film ratings:
+   - **star**: Average rating > 8
+   - **good**: Average rating > 7 and ≤ 8
+   - **average**: Average rating > 6 and ≤ 7
+   - **bad**: Average rating ≤ 6
+3. Activity status is tracked (whether an actor made films that year)
+
+Historical changes in these attributes are tracked using a Type 2 SCD approach with effective dating.
+
+### Code Structure
+models/
+├── staging/             # Raw data sources with minimal transformations
+│   ├── stg_actor_films.sql
+│   ├── stg_actors_current.sql
+│   └── _sources.yml
+├── intermediate/        # Business logic and transformations
+│   ├── int_actor_films_yearly.sql
+│   └── int_actor_metrics.sql
+└── marts/               # Final presentation layer
+    ├── dim_actors.sql
+    ├── dim_actors_history.sql
+    └── fct_actor_films.sql
+## Getting Started
+
+### Prerequisites
+- dbt (version 1.3.0 or higher)
+- Snowflake account
+- Environment variables configured:
+  - `SNOWFLAKE_ACCOUNT`
+  - `SNOWFLAKE_USER`
+  - `SNOWFLAKE_PASSWORD`
+  - `DBT_SCHEMA`
+  - (optional) `SNOWFLAKE_ROLE`, `SNOWFLAKE_DATABASE`, `SNOWFLAKE_WAREHOUSE`
+

@@ -1,0 +1,71 @@
+version: 2
+
+sources:
+  - name: bhaskar_reddy07
+    database: dataexpert_student
+    schema: "{{ env_var('SCHEMA') }}"
+    tables:
+      - name: actors
+        description: >
+          Contains actor information including nested film data.
+          Each actor record includes a collection of their films with ratings and votes.
+          Optimized with Parquet format and partitioned by current_year.
+        columns:
+          - name: actor
+            description: Actor's full name
+          - name: actor_id
+            description: Unique identifier for the actor
+          - name: films
+            description: >
+              Nested array of film data containing film name, votes, rating, and film_id
+          - name: quality_class
+            description: Classification of actor based on performance metrics
+          - name: is_active
+            description: Boolean indicating if the actor is currently active
+          - name: current_year
+            description: Year of the record, used for partitioning
+
+      - name: actors_history_scd
+        description: >
+          Type 2 Slowly Changing Dimension (SCD) table tracking historical changes
+          to actor attributes over time. Specifically tracks quality_class and active status
+          changes with effective dating.
+        columns:
+          - name: actor
+            description: Actor's full name
+          - name: actor_id
+            description: Unique identifier for the actor
+          - name: quality_class
+            description: Historical quality classification of the actor
+          - name: is_active
+            description: Historical active status of the actor
+          - name: start_date
+            description: Date when this version of the record became effective
+          - name: end_date
+            description: Date when this version was superseded (NULL indicates current record)
+          - name: current_year
+            description: Year of the historical record, used for partitioning
+
+  - name: academy
+    database: dataexpert_student
+    schema: bootcamp
+    tables:
+      - name: actor_films
+        description: >
+          Flattened view of actor-film relationships with rating information.
+          Stored in Parquet format and partitioned by year.
+        columns:
+          - name: actor
+            description: Actor's full name
+          - name: actor_id
+            description: Unique identifier for the actor
+          - name: film
+            description: Film title
+          - name: year
+            description: Release year of the film, used for partitioning
+          - name: votes
+            description: Number of votes received by the film
+          - name: rating
+            description: Average rating of the film
+          - name: film_id
+            description: Unique identifier for the film

@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: int_actor_films_yearly
+    description: >
+      Intermediate model that aggregates actor film data by year.
+      This model calculates actor metrics per year including quality classification,
+      activity status, and a structured collection of their films for that year.
+    columns:
+      - name: actor
+        description: Actor's full name
+        tests:
+          - not_null
+      - name: actor_id
+        description: Unique identifier for the actor
+        tests:
+          - not_null
+      - name: year
+        description: Year of film releases
+        tests:
+          - not_null
+      - name: films
+        description: >
+          Nested array of film data containing film name, votes, rating, and film_id
+          for all films the actor participated in during the specified year
+      - name: quality_class
+        description: >
+          Classification of actor based on average film rating for the year:
+          star (>8), good (>7 and ≤8), average (>6 and ≤7), or bad (≤6)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['star', 'good', 'average', 'bad']
+      - name: is_active
+        description: Boolean indicating if the actor was active in this year
+        tests:
+          - not_null
+      - name: current_year
+        description: Same as year, used for consistency with actor dimension tables
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_actor_films')
+              field: year
