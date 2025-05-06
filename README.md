@@ -47,6 +47,7 @@ This project implements a sophisticated year-by-year processing approach where:
 Historical changes in these attributes are tracked using a Type 2 SCD approach with effective dating.
 
 ### Code Structure
+```bash
 models/
 ├── staging/             # Raw data sources with minimal transformations
 │   ├── stg_actor_films.sql
@@ -59,6 +60,7 @@ models/
     ├── dim_actors.sql
     ├── dim_actors_history.sql
     └── fct_actor_films.sql
+```
 ## Getting Started
 
 ### Prerequisites
