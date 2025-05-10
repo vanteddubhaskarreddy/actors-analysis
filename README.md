@@ -79,7 +79,7 @@ models/
 
 1. Clone this repository:
     ```bash
-    git clone https://github.com/yourusername/actors-analysis.git
+    git clone https://github.com/vanteddubhaskarreddy/actors-analysis.git
     cd actors-analysis
     ```
 
